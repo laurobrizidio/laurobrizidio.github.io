@@ -1,99 +1,1652 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <title>Portfólio - Desenvolvedor Android</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-en="Lauro Brizidio — Software Engineering, Embedded Systems &amp; Microelectronics">Lauro Brizidio — Engenharia de Software, Embarcados &amp; Microeletrônica</title>
+  <meta name="description" data-en-content="Lauro Brizidio’s portfolio covering software engineering, embedded systems (Yocto, RISC-V, ESP32), Android/AOSP, and VLSI microelectronics in Manaus, Brazil." content="Portfólio de Lauro Brizidio — Engenheiro de Software, Sistemas Embarcados (Yocto, RISC-V, ESP32), Plataforma Android/AOSP e Microeletrônica VLSI em Manaus, AM." />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans, Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            surface: {
+              light: '#FAFAFA',
+              dark: '#09090B',
+            },
+            card: {
+              light: '#FFFFFF',
+              dark: '#111114',
+            },
+            accent: {
+              DEFAULT: '#059669', // Emerald 600
+              light: '#10B981',   // Emerald 500
+              subtle: 'rgba(16, 185, 129, 0.1)',
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Variáveis base para controle refinado de temas e efeitos */
+    :root {
+      --bg-grid-color: rgba(24, 24, 27, 0.045);
+      --spotlight-color: rgba(16, 185, 129, 0.09);
+      --border-hairline: rgba(24, 24, 27, 0.08);
+    }
+
+    html.dark {
+      --bg-grid-color: rgba(255, 255, 255, 0.04);
+      --spotlight-color: rgba(16, 185, 129, 0.12);
+      --border-hairline: rgba(255, 255, 255, 0.08);
+    }
+
+    body {
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Grade arquitetônica sutil no Hero */
+    .architectural-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, var(--bg-grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--bg-grid-color) 1px, transparent 1px);
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 35%, #000 55%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 35%, #000 55%, transparent 100%);
+    }
+
+    /* Animações de revelação acionadas via IntersectionObserver */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Atrasos escalonados (stagger) */
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+    .delay-400 { transition-delay: 400ms; }
+
+    /* Efeito Spotlight rastreando o cursor nos Bento Cards */
+    .bento-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.35s ease,
+                  box-shadow 0.35s ease;
+    }
+
+    .bento-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        520px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        var(--spotlight-color),
+        transparent 45%
+      );
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .bento-card:hover::before {
+      opacity: 1;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Transição suave de filtro de projetos */
+    .project-item {
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .project-item.is-hidden {
+      opacity: 0;
+      transform: scale(0.97);
+      pointer-events: none;
+      position: absolute;
+      visibility: hidden;
+    }
+
+    /* Linha da timeline animada */
+    .timeline-progress-line {
+      transform-origin: top;
+      transform: scaleY(0);
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .timeline-progress-line.is-drawn {
+      transform: scaleY(1);
+    }
+
+    /* Respeito total à acessibilidade de movimento reduzido */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .timeline-progress-line {
+        transform: scaleY(1) !important;
+      }
+    }
+
+    /* Barra de rolagem discreta */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(113, 113, 122, 0.3);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(113, 113, 122, 0.5);
+    }
+  </style>
 </head>
+<body class="bg-surface-light text-zinc-900 dark:bg-surface-dark dark:text-zinc-100 transition-colors duration-300 selection:bg-emerald-500/20 selection:text-emerald-700 dark:selection:text-emerald-300">
 
-<body bgcolor="black" text="lime" link="cyan" vlink="magenta" alink="yellow">
+  <!-- Barra de progresso de leitura no topo -->
+  <div id="scroll-progress" class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-400 z-50 transition-all duration-150 ease-out" style="width: 0%;"></div>
 
-<center>
-    <h1>=====================================</h1>
-    <h1>        LAURO BRIZIDIO        </h1>
-    <h1>=====================================</h1>
-    <img src="profile.png" height="200"/>
+  <!-- Navegação Superior Glassmorphic -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/75 dark:bg-zinc-950/75 border-b border-zinc-200/70 dark:border-zinc-800/70 transition-colors duration-300">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <!-- Identidade / Monograma -->
+      <a href="#inicio" class="group flex items-center gap-2.5 focus:outline-none">
+        <div class="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center font-mono text-xs font-semibold tracking-tighter shadow-sm group-hover:bg-emerald-600 dark:group-hover:bg-emerald-400 dark:group-hover:text-zinc-950 transition-colors">
+          LB
+        </div>
+        <span class="font-display font-semibold text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
+          Lauro Brizidio
+        </span>
+      </a>
 
-</center>
+      <!-- Links de Navegação Desktop -->
+      <nav class="hidden md:flex items-center gap-4 lg:gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+        <a href="#sobre" class="hover:text-zinc-950 dark:hover:text-white transition-colors" data-en="Expertise &amp; Tools">Expertise &amp; Stack</a>
+        <a href="#projetos" class="hover:text-zinc-950 dark:hover:text-white transition-colors" data-en="Projects">Projetos</a>
+        <a href="#trajetoria" class="hover:text-zinc-950 dark:hover:text-white transition-colors" data-en="Experience">Trajetória</a>
+        <a href="#contato" class="hover:text-zinc-950 dark:hover:text-white transition-colors" data-en="Contact">Contato</a>
+      </nav>
 
-<hr>
+      <!-- Idioma, tema e menu mobile -->
+      <div class="flex items-center gap-2">
+        <div role="group" aria-label="Idioma" data-en-label="Language" class="flex items-center rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 p-0.5 font-mono text-xs font-medium">
+          <button type="button" data-language="pt-BR" lang="pt-BR" aria-label="Português" aria-pressed="true" class="px-1.5 sm:px-2 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-300 aria-pressed:bg-zinc-100 dark:aria-pressed:bg-zinc-800 aria-pressed:text-emerald-700 dark:aria-pressed:text-emerald-400 focus-visible:outline-emerald-500">PT</button>
+          <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="false" class="px-1.5 sm:px-2 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-300 aria-pressed:bg-zinc-100 dark:aria-pressed:bg-zinc-800 aria-pressed:text-emerald-700 dark:aria-pressed:text-emerald-400 focus-visible:outline-emerald-500">EN</button>
+        </div>
+        <button
+          id="theme-toggle"
+          type="button"
+          aria-label="Alternar tema claro ou escuro" data-en-label="Toggle light or dark theme"
+          class="p-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+        >
+          <!-- Ícone Sol (visível no dark mode) -->
+          <svg id="icon-sun" class="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Ícone Lua (visível no light mode) -->
+          <svg id="icon-moon" class="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
 
-<h2>> Sobre Mim</h2>
+        <!-- Botão Menu Mobile -->
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Abrir menu de navegação" data-en-label="Open navigation menu"
+          aria-controls="mobile-menu" aria-expanded="false"
+          class="md:hidden p-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 text-zinc-700 dark:text-zinc-300"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
 
-<p>
-Olá! Sou Desenvolvedor Android e estudante de Engenharia Eletrônica.
-</p>
+    <!-- Dropdown Mobile -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-zinc-200/70 dark:border-zinc-800/70 bg-white/95 dark:bg-zinc-950/95 px-5 py-4 space-y-3">
+      <a href="#sobre" class="block py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-emerald-600" data-en="Expertise &amp; Tools">Expertise &amp; Stack</a>
+      <a href="#projetos" class="block py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-emerald-600" data-en="Projects">Projetos</a>
+      <a href="#trajetoria" class="block py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-emerald-600" data-en="Experience">Trajetória</a>
+      <a href="#contato" class="block py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-emerald-600" data-en="Contact">Contato</a>
+    </div>
+  </header>
 
-<p>
-<li> Foco em arquitetura de software, desenvolvimento de SDKs e integração mobile com sistemas cloud-native. Experiência em aplicações escaláveis, modularização, 
-boas práticas arquiteturais e integração com serviços em nuvem.
+  <main>
+    <!-- =====================================================================
+         HERO SECTION
+    ====================================================================== -->
+    <section id="inicio" class="relative overflow-hidden pt-16 pb-24 sm:pt-24 sm:pb-32 border-b border-zinc-200/70 dark:border-zinc-800/70">
+      <!-- Fundo de grade arquitetônica -->
+      <div class="absolute inset-0 architectural-grid pointer-events-none"></div>
 
-</p>
+      <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- Coluna Esquerda: Apresentação Editorial -->
+          <div class="lg:col-span-7 space-y-6">
+            <!-- Status Badge Animado -->
+            <div class="reveal inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-zinc-200/90 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 shadow-xs">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span class="font-mono text-xs font-medium text-zinc-700 dark:text-zinc-300 tracking-tight" data-en="Available for projects &amp; research • Manaus, AM">
+                Disponível para projetos &amp; pesquisa • Manaus, AM
+              </span>
+            </div>
 
-<p> 
-Interesse contínuo em robótica, microeletrônica e sistemas embarcados.	
-</p>
+            <!-- Título Principal -->
+            <div class="space-y-3">
+              <h1 class="reveal delay-100 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-zinc-950 dark:text-white leading-[1.1]">
+                Lauro Brizidio
+              </h1>
+              <p class="reveal delay-200 font-display text-xl sm:text-2xl font-medium text-emerald-700 dark:text-emerald-400 tracking-tight" data-en="Software Engineer | Embedded Systems &amp; Microelectronics">
+                Engenheiro de Software, Sistemas Embarcados &amp; Microeletrônica
+              </p>
+            </div>
 
-<hr>
+            <!-- Tagline -->
+            <p class="reveal delay-300 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-2xl" data-en="Building Android platforms, embedded Linux systems, VLSI circuits, and intelligent hardware in the Amazon.">
+              Construindo desde plataformas Android e sistemas Linux embarcados até circuitos integrados VLSI e soluções de hardware inteligente na Amazônia.
+            </p>
 
-<h2>> Competências Técnicas</h2>
+            <!-- CTAs com Efeito Magnético Sutil -->
+            <div class="reveal delay-400 pt-2 flex flex-wrap items-center gap-3.5">
+              <a
+                href="#projetos"
+                class="magnetic-btn inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-medium text-sm shadow-sm hover:bg-emerald-600 dark:hover:bg-emerald-400 dark:hover:text-zinc-950 transition-colors duration-200"
+              >
+                <span data-en="Explore Projects">Explorar Projetos</span>
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
 
-<h3>Android</h3>
-<ul>
-    <li>Kotlin</li>
-    <li>Java</li>
-    <li>Jetpack Compose</li>
-    <li>MVVM</li>
-    <li>Clean Architecture</li>
-    <li>Testes Automatizados</li>
-    <li>AOSP</li>
-</ul>
+              <button
+                type="button"
+                onclick="copyEmailToClipboard()"
+                class="magnetic-btn inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 font-medium text-sm hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all duration-200"
+              >
+                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span data-en="Get in Touch">Entrar em Contato</span>
+              </button>
+            </div>
+          </div>
 
-<h3>Cloud & Backend</h3>
-<ul>
-    <li>AWS Lambda</li>
-    <li>CloudWatch (Log Insights)</li>
-    <li>Arquitetura Serverless</li>
-    <li>Integração com APIs externas</li>
-</ul>
+          <!-- Coluna Direita: Micro-Widget Interativo de Telemetria & Stack -->
+          <div class="lg:col-span-5 reveal delay-300">
+            <div class="bento-card rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 shadow-sm p-5 sm:p-6">
+              <!-- Barra superior estilo sistema operacional -->
+              <div class="flex items-center justify-between pb-4 mb-4 border-b border-zinc-100 dark:border-zinc-800/80">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <span class="ml-2 font-mono text-xs text-zinc-500 dark:text-zinc-400">android_stack // manaus-am</span>
+                </div>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium">
+                  ONLINE
+                </span>
+              </div>
 
-<h3>Ferramentas</h3>
-<ul>
-    <li>Git & GitHub</li>
-    <li>Docker</li>
-    <li>Linux</li>
-    <li>CI/CD</li>
-</ul>
+              <!-- Seletor de Camada de Arquitetura (Interativo) -->
+              <div class="space-y-4">
+                <div class="flex items-center justify-between text-xs font-mono text-zinc-500 dark:text-zinc-400">
+                  <span data-en="ABSTRACTION LAYER">CAMADA DE ABSTRAÇÃO</span>
+                  <span id="layer-badge" class="text-zinc-900 dark:text-zinc-200 font-semibold">SILICON → APP</span>
+                </div>
 
-<h3>Eletrônica</h3>
-<ul>
-    <li>Microeletrônica</li>
-    <li>Simulação de Circuitos</li>
-    <li>Sistemas Digitais</li>
-</ul>
+                <!-- Botões interativos de camada -->
+                <div class="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-950 border border-zinc-200/60 dark:border-zinc-800/80">
+                  <button type="button" data-layer="vlsi" class="layer-tab active py-1.5 px-2 rounded-lg font-mono text-xs font-medium bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-xs transition-all">
+                    01. Silicon
+                  </button>
+                  <button type="button" data-layer="embedded" class="layer-tab py-1.5 px-2 rounded-lg font-mono text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-all">
+                    02. Kernel/OS
+                  </button>
+                  <button type="button" data-layer="android" class="layer-tab py-1.5 px-2 rounded-lg font-mono text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-all">
+                    03. Platform
+                  </button>
+                </div>
 
-<hr>
+                <!-- Painel Dinâmico de Inspeção -->
+                <div id="layer-content" class="rounded-xl bg-zinc-50 dark:bg-zinc-950/70 border border-zinc-200/70 dark:border-zinc-800/80 p-4 font-mono text-xs space-y-2.5 min-h-[152px] transition-all">
+                  <div class="flex justify-between">
+                    <span class="text-zinc-400">target_arch:</span>
+                    <span class="text-zinc-800 dark:text-zinc-200 font-medium">CMOS Sub-Micron / RISC-V</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-zinc-400">verification:</span>
+                    <span class="text-emerald-600 dark:text-emerald-400">SPICE / ngspice / FPGA</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-zinc-400">affiliation:</span>
+                    <span class="text-zinc-800 dark:text-zinc-200">CI Amazônia • SBMicro</span>
+                  </div>
+                  <div id="layer-description" class="pt-2 border-t border-zinc-200/60 dark:border-zinc-800/80 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                    &gt; Projeto físico e elétrico de circuitos integrados de baixo consumo e síntese em hardware reconfigurável.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<h2>> Projetos</h2>
+        </div>
+      </div>
+    </section>
 
-<ul>
-    <li>Plant.IO</li>
-    <li>VRWU - Virtual Reality for Wheelchair users</li>
-    <li>Integração entre Factory IO e CLP</li>
-</ul>
+    <!-- =====================================================================
+         SEÇÃO 2: SOBRE & STACK (BENTO GRID INTERATIVO)
+    ====================================================================== -->
+    <section id="sobre" class="py-20 sm:py-28 border-b border-zinc-200/70 dark:border-zinc-800/70">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8">
+        
+        <!-- Cabeçalho da Seção -->
+        <div class="max-w-2xl mb-14 reveal">
+          <span class="font-mono text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400" data-en="01 // Areas of Expertise">
+            01 // Áreas de atuação
+          </span>
+          <h2 class="mt-2 font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 dark:text-white" data-en="From Hardware to Android Apps">
+            Do hardware aos aplicativos Android.
+          </h2>
+          <p class="mt-3 text-base text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="I build native Android apps and work with AOSP, embedded Linux, and integrated circuit design.">
+            Desenvolvo aplicativos Android nativos e trabalho com AOSP, Linux embarcado e projeto de circuitos integrados.
+          </p>
+        </div>
 
-<hr>
+        <!-- Bento Grid (4 Cards) -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+          
+          <!-- Card 1: Android & AOSP (7 colunas no desktop) -->
+          <article class="bento-card reveal md:col-span-7 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs">
+            <div class="relative z-10">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <span class="font-mono text-xs text-zinc-400">PLATFORM & MOBILE</span>
+              </div>
 
-<h2>> Contato</h2>
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white">
+                Android & AOSP
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Native app development and Android platform customization, including OS-level changes, virtualization, and graphics rendering.">
+                Desenvolvimento de aplicativos nativos resilientes e customização de plataforma em nível de sistema operacional, virtualização e renderização gráfica.
+              </p>
+            </div>
 
-<p>Email: laurobrizidio@hotmail.com</p>
-<p>LinkedIn: linkedin.com/in/laurobrizidio</p>
-<p>GitHub: github.com/laurobrizidio</p>
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">Kotlin</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">Jetpack Compose</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">Clean Architecture</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">MVVM & Room</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">AOSP Cuttlefish</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">Vulkan / gfxstream</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">Appium / Robot Framework</span>
+            </div>
+          </article>
 
-<hr>
+          <!-- Card 2: Embedded Linux & IoT (5 colunas no desktop) -->
+          <article class="bento-card reveal delay-100 md:col-span-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs">
+            <div class="relative z-10">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                  </svg>
+                </div>
+                <span class="font-mono text-xs text-zinc-400">EDGE & KERNEL</span>
+              </div>
 
-<center>
-    <p>Última atualização: 2026</p>
-</center>
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white">
+                Embedded Linux & IoT
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Building custom Linux distributions and real-time firmware, and running machine learning inference on edge devices.">
+                Construção de distribuições Linux sob medida, firmware em tempo real e inferência inteligente na borda (Edge AI).
+              </p>
+            </div>
 
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">Yocto Project</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">BitBake / Poky</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">ESP32</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">RISC-V & FPGA</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">TinyML</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">NILM</span>
+            </div>
+          </article>
+
+          <!-- Card 3: Microeletrônica & VLSI (5 colunas no desktop) -->
+          <article class="bento-card reveal delay-200 md:col-span-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs">
+            <div class="relative z-10">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <span class="font-mono text-xs text-zinc-400">IC DESIGN</span>
+              </div>
+
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white" data-en="Microelectronics &amp; VLSI">
+                Microeletrônica &amp; VLSI
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Design and electrical simulation of digital and analog integrated circuits using advanced submicron technologies.">
+                Projeto e simulação elétrica de circuitos integrados digitais e analógicos em tecnologias sub-micrônicas avançadas.
+              </p>
+            </div>
+
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300" data-en="CMOS Design">Design CMOS</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">Very Deep Sub-Micron</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">SPICE / ngspice</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300" data-en="SBMicro Research">Pesquisa SBMicro</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">CI Amazônia</span>
+            </div>
+          </article>
+
+          <!-- Card 4: Comunidade & Liderança (7 colunas no desktop) -->
+          <article class="bento-card reveal delay-300 md:col-span-7 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs">
+            <div class="relative z-10">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <span class="font-mono text-xs text-zinc-400">ECOSYSTEM & IMPACT</span>
+              </div>
+
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white" data-en="Maker Culture &amp; Leadership">
+                Cultura Maker &amp; Liderança
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="I contribute to the Amazon region’s innovation community through free software, collaborative mapping, and technical event production.">
+                Contribuição ativa no ecossistema de inovação da Amazônia, software livre, mapeamento colaborativo e produção técnica de eventos de impacto.
+              </p>
+            </div>
+
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300" data-en="TEDxManaus Production">Produção Técnica TEDxManaus</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300">Hack Lab Amazonas</span>
+              <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300" data-en="FOSS Culture">Cultura FOSS</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SEÇÃO 3: PROJETOS EM DESTAQUE (COM FILTRO & MODAL DEEP-DIVE)
+    ====================================================================== -->
+    <section id="projetos" class="py-20 sm:py-28 border-b border-zinc-200/70 dark:border-zinc-800/70">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8">
+        
+        <!-- Cabeçalho + Barra de Filtros -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 reveal">
+          <div class="max-w-xl">
+            <span class="font-mono text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400" data-en="02 // Applied Engineering">
+              02 // Engenharia Aplicada
+            </span>
+            <h2 class="mt-2 font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 dark:text-white" data-en="Projects &amp; Research">
+              Projetos e Pesquisa
+            </h2>
+            <p class="mt-2.5 text-base text-zinc-600 dark:text-zinc-400" data-en="Select a project to see its architecture, engineering decisions, and technology stack.">
+              Selecione um projeto para inspecionar sua arquitetura, decisões técnicas e stack completa.
+            </p>
+          </div>
+
+          <!-- Botões de Filtro -->
+          <div role="group" aria-label="Filtrar projetos por categoria" data-en-label="Filter projects by category" class="flex flex-wrap gap-2">
+            <button type="button" data-filter="all" class="filter-btn active px-4 py-2 rounded-xl font-mono text-xs font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 transition-all" data-en="All">
+              Todos
+            </button>
+            <button type="button" data-filter="android" class="filter-btn px-4 py-2 rounded-xl font-mono text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-all">
+              Android & Mobile
+            </button>
+            <button type="button" data-filter="embedded" class="filter-btn px-4 py-2 rounded-xl font-mono text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-all">
+              Embedded & Hardware
+            </button>
+            <button type="button" data-filter="vlsi" class="filter-btn px-4 py-2 rounded-xl font-mono text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-all" data-en="Microelectronics &amp; VLSI">
+              Microeletrônica &amp; VLSI
+            </button>
+            <button type="button" data-filter="other" class="filter-btn px-4 py-2 rounded-xl font-mono text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-all" data-en="Other">
+              Outros
+            </button>
+          </div>
+        </div>
+
+        <!-- Grid de Projetos -->
+        <div id="projects-grid" class="relative grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Projeto 1: Volei Pro -->
+          <article
+            data-category="android"
+            onclick="openProjectModal('volei')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectModal('volei');}"
+            tabindex="0"
+            role="button"
+            aria-label="Ver detalhes do projeto Volei Pro" data-en-label="View Volei Pro project details"
+            class="project-item bento-card group cursor-pointer rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+          >
+            <div class="relative z-10">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="font-mono text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+                  Android & Mobile • FOSS
+                </span>
+                <span class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:border-emerald-500/40 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                Volei Pro
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Native app for managing recreational matches, dynamically rotating teams, and storing data locally with Clean Architecture &amp; MVVM.">
+                Aplicativo nativo para gestão de partidas recreativas, rotação dinâmica de equipes e persistência local com Clean Architecture &amp; MVVM.
+              </p>
+            </div>
+
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Kotlin</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Jetpack Compose</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Room DB</span>
+              </div>
+              <span class="font-mono text-xs text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 shrink-0" data-en="Architecture →">
+                Arquitetura →
+              </span>
+            </div>
+          </article>
+
+          <!-- Projeto 3: Pesquisa VLSI, RISC-V & TinyML — CI Amazônia -->
+          <article
+            data-category="vlsi embedded"
+            onclick="openProjectModal('ci-amazonia')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectModal('ci-amazonia');}"
+            tabindex="0"
+            role="button"
+            aria-label="Ver detalhes do projeto Pesquisa VLSI, RISC-V e TinyML" data-en-label="View VLSI, RISC-V and TinyML research project details"
+            class="project-item bento-card group cursor-pointer rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+          >
+            <div class="relative z-10">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="font-mono text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" data-en="Microelectronics &amp; VLSI">
+                  Microeletrônica &amp; VLSI
+                </span>
+                <span class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:border-emerald-500/40 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors" data-en="VLSI, RISC-V &amp; TinyML Research — CI Amazônia">
+                Pesquisa VLSI, RISC-V &amp; TinyML — CI Amazônia
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Low-power architectures and non-intrusive load monitoring (NILM) research through a microelectronics residency in Manaus.">
+                Desenvolvimento de arquiteturas de baixo consumo e monitoramento não-intrusivo de cargas elétricas (NILM) no programa de residência em microeletrônica em Manaus.
+              </p>
+            </div>
+
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">RISC-V</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">FPGA</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">CMOS / NILM</span>
+              </div>
+              <span class="font-mono text-xs text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 shrink-0" data-en="Architecture →">
+                Arquitetura →
+              </span>
+            </div>
+          </article>
+
+          <article
+            data-category="vlsi"
+            onclick="openProjectModal('memory-array')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectModal('memory-array');}"
+            tabindex="0"
+            role="button"
+            aria-label="Ver detalhes do projeto Memória de 16 bits com flip-flops" data-en-label="View project details for 16-Bit Flip-Flop Memory Array"
+            class="project-item bento-card group cursor-pointer rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+          >
+            <div class="relative z-10">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="font-mono text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" data-en="Microelectronics &amp; VLSI">
+                  Microeletrônica &amp; VLSI
+                </span>
+                <span class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:border-emerald-500/40 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors" data-en="16-Bit Flip-Flop Memory Array">
+                Memória de 16 bits com flip-flops
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="A memory design implemented with open-source tools, from Verilog through physical layout.">
+                Implementação de uma memória com ferramentas de código aberto, do Verilog ao layout físico.
+              </p>
+            </div>
+
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Verilog</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">LibreLane</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">OpenROAD</span>
+              </div>
+              <span class="font-mono text-xs text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 shrink-0">
+                <span data-en="Apr–Jul 2026">abr.–jul. de 2026</span>
+              </span>
+            </div>
+          </article>
+
+          <article
+            data-category="android embedded"
+            onclick="openProjectModal('plant-io')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectModal('plant-io');}"
+            tabindex="0"
+            role="button"
+            aria-label="Ver detalhes do projeto Plant.io | Monitoramento de Plantas" data-en-label="View project details for Plant.io | Android-Based Plant Monitoring"
+            class="project-item bento-card group cursor-pointer rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+          >
+            <div class="relative z-10">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="font-mono text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" data-en="Android &amp; Embedded Systems">
+                  Android &amp; Sistemas Embarcados
+                </span>
+                <span class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:border-emerald-500/40 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors" data-en="Plant.io | Android-Based Plant Monitoring">
+                Plant.io | Monitoramento de Plantas
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Temperature and soil moisture monitoring on an Android device using sensors connected to an ESP32.">
+                Monitoramento de temperatura e umidade do solo em um dispositivo Android com sensores ligados a um ESP32.
+              </p>
+            </div>
+
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">AOSP</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Android HAL</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">ESP32</span>
+              </div>
+              <span class="font-mono text-xs text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 shrink-0">
+                <span data-en="Mar–Oct 2023">mar.–out. de 2023</span>
+              </span>
+            </div>
+          </article>
+
+          <article
+            data-category="other"
+            onclick="openProjectModal('arapaima-gigas')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectModal('arapaima-gigas');}"
+            tabindex="0"
+            role="button"
+            aria-label="Ver detalhes do projeto Arapaima Gigas | Rota Manaus–Tefé" data-en-label="View project details for Arapaima Gigas | Manaus–Tefé Route"
+            class="project-item bento-card group cursor-pointer rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-6 sm:p-8 flex flex-col justify-between shadow-2xs focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+          >
+            <div class="relative z-10">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="font-mono text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" data-en="Electrical Engineering">
+                  Engenharia Elétrica
+                </span>
+                <span class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:border-emerald-500/40 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3 class="font-display text-xl font-bold text-zinc-950 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors" data-en="Arapaima Gigas | Manaus–Tefé Route">
+                Arapaima Gigas | Rota Manaus–Tefé
+              </h3>
+              <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Electrical design and solar power sizing for a vessel serving the Manaus–Tefé route.">
+                Projeto elétrico e dimensionamento do sistema solar para uma embarcação da rota Manaus–Tefé.
+              </p>
+            </div>
+
+            <div class="relative z-10 mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300" data-en="Solar power">Energia solar</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300" data-en="Electrical design">Projeto elétrico</span>
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">WFSA</span>
+              </div>
+              <span class="font-mono text-xs text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 shrink-0">
+                <span data-en="Jan–Jun 2021">jan.–jun. de 2021</span>
+              </span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SEÇÃO 4: TRAJETÓRIA & EXPERIÊNCIAS (VERTICAL TIMELINE)
+    ====================================================================== -->
+    <section id="trajetoria" class="py-20 sm:py-28 border-b border-zinc-200/70 dark:border-zinc-800/70">
+      <div class="max-w-4xl mx-auto px-5 sm:px-8">
+        
+        <div class="mb-14 reveal">
+          <span class="font-mono text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400" data-en="03 // Experience &amp; Research">
+            03 // Experiência &amp; Pesquisa
+          </span>
+          <h2 class="mt-2 font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 dark:text-white" data-en="Career &amp; Community">
+            Trajetória
+          </h2>
+        </div>
+
+        <div class="space-y-14">
+          <section id="trajetoria-profissional" aria-labelledby="trajetoria-profissional-titulo" class="scroll-mt-24">
+            <h3 id="trajetoria-profissional-titulo" class="reveal mb-6 font-display text-xl sm:text-2xl font-bold tracking-tight text-zinc-950 dark:text-white" data-en="Professional Experience">
+              Trajetória Profissional
+            </h3>
+            <div class="career-timeline relative flex flex-col gap-12 pl-8 sm:pl-10">
+              <div class="absolute left-[11px] sm:left-[15px] top-2 bottom-2 w-[2px] bg-zinc-200 dark:bg-zinc-800"></div>
+              <div class="timeline-progress-line absolute left-[11px] sm:left-[15px] top-2 bottom-2 w-[2px] bg-emerald-500"></div>
+
+              <div class="reveal relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="Android Developer">
+                    Desenvolvedor Android
+                  </h4>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-0.5 rounded w-fit">
+                    Instituto de Pesquisas Eldorado • Manaus, AM
+                  </span>
+                </div>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Android development with Kotlin and collaboration with the QA team on automated testing and software quality.">
+                  Desenvolvimento Android com Kotlin e colaboração com a equipe de QA em testes automatizados e qualidade de software.
+                </p>
+              </div>
+
+              <div class="reveal delay-200 relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="Android Developer">
+                    Desenvolvedor Android
+                  </h4>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-0.5 rounded w-fit">
+                    Payface • Florianopolis/SC
+                  </span>
+                </div>
+                <ul class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-zinc-600 marker:text-emerald-500 dark:text-zinc-400">
+                  <li data-en="Contributed to a facial recognition SDK for Positivo L100, L300, and L400 terminals that achieved 95% recognition accuracy. Used MVVM and Clean Architecture for scalability and maintainability, Amazon S3 for storage, and DynamoDB for NoSQL data.">
+                    Contribuí para um SDK de reconhecimento facial para os terminais Positivo L100, L300 e L400 que atingiu 95% de acerto. Usei MVVM e Clean Architecture para facilitar a manutenção e a expansão do SDK, Amazon S3 para armazenamento e DynamoDB para dados NoSQL.
+                  </li>
+                  <li data-en="Adapted a smartphone app to the L100 terminal’s square screen using React Native, Hooks, and Styled Components, with a focus on performance. Helped onboard a new Android developer.">
+                    Adaptei a interface de um aplicativo de smartphone à tela quadrada do L100 com React Native, Hooks e Styled Components, com foco em desempenho. Também apoiei a integração de um novo desenvolvedor Android à equipe.
+                  </li>
+                  <li data-en="Implemented JUnit unit tests and Espresso instrumented tests covering the workflow from the SDK through payment, achieving 80% test coverage. Ran unit tests in Bitbucket Pipelines.">
+                    Implementei testes unitários com JUnit e testes instrumentados com Espresso para cobrir o fluxo do SDK até o pagamento. O trabalho alcançou 80% de cobertura, com execução dos testes unitários no Bitbucket Pipelines.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="reveal relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="Android Developer">
+                    Desenvolvedor Android
+                  </h4>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-0.5 rounded w-fit">
+                    Banco Original • São Paulo, SP
+                  </span>
+                </div>
+                <ul class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-zinc-600 marker:text-emerald-500 dark:text-zinc-400">
+                  <li data-en="Developed Pix and Open Finance features in Java and Kotlin for an app serving 8 million customers. Used MVVM and Clean Architecture to build payee registration, handoff payments, Pix Saque, and Pix Troco, with a phased rollout.">
+                    Desenvolvi funcionalidades de Pix e Open Finance em Java e Kotlin para um app com 8 milhões de clientes. Usei MVVM e Clean Architecture no cadastro de favorecidos, nos pagamentos via hand-off e no Pix Saque e Pix Troco, com lançamento em fases.
+                  </li>
+                  <li data-en="Managed production incidents involving the Central Bank of Brazil’s Instant Payments System (SPI) based on reports from customers and financial institutions. Assigned technical tasks across a six-person team and monitored incidents with Splunk and Dynatrace.">
+                    Gerenciei incidentes em produção do Sistema de Pagamentos Instantâneos (SPI) do Banco Central a partir de relatos de clientes e instituições financeiras. Distribuí as atividades técnicas em uma equipe de seis pessoas e acompanhei os incidentes com Splunk e Dynatrace.
+                  </li>
+                  <li data-en="Helped implement instrumented tests for Pix features to complement unit tests. Tested APIs with Postman and used Firebase and Jenkins.">
+                    Participei da implementação de testes instrumentados para complementar os testes unitários das funcionalidades de Pix. Testei APIs com Postman e usei Firebase e Jenkins.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section id="trajetoria-academica" aria-labelledby="trajetoria-academica-titulo" class="scroll-mt-24">
+            <h3 id="trajetoria-academica-titulo" class="reveal mb-6 font-display text-xl sm:text-2xl font-bold tracking-tight text-zinc-950 dark:text-white" data-en="Academic Experience">
+              Trajetória Acadêmica
+            </h3>
+            <div class="career-timeline relative flex flex-col gap-12 pl-8 sm:pl-10">
+              <div class="absolute left-[11px] sm:left-[15px] top-2 bottom-2 w-[2px] bg-zinc-200 dark:bg-zinc-800"></div>
+              <div class="timeline-progress-line absolute left-[11px] sm:left-[15px] top-2 bottom-2 w-[2px] bg-emerald-500"></div>
+
+              <div class="reveal relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-emerald-500 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="Microelectronics &amp; Hardware Resident">
+                    Residente em Microeletrônica &amp; Hardware
+                  </h4>
+                  <span class="font-mono text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded w-fit">
+                    CI Amazônia • Manaus, AM
+                  </span>
+                </div>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Research and development in very-deep-submicron CMOS design, RISC-V architectures, FPGA synthesis, and energy-efficient embedded systems for monitoring in the Amazon region.">
+                  Pesquisa e desenvolvimento em projeto de circuitos integrados CMOS (Very Deep Sub-Micron), arquiteturas RISC-V, síntese em FPGA e sistemas embarcados de eficiência energética aplicados ao monitoramento inteligente na região amazônica.
+                </p>
+              </div>
+
+              <div class="reveal delay-100 relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="Research &amp; Conference Presentation">
+                    Apresentação &amp; Pesquisa Científica
+                  </h4>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-0.5 rounded w-fit">
+                    Chip In Sampa / SFORUM (USP) • SBMicro
+                  </span>
+                </div>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Member of the Brazilian Microelectronics Society (SBMicro). Presented research at Chip In Sampa / SFORUM at the University of São Paulo’s Polytechnic School.">
+                  Membro da Sociedade Brasileira de Microeletrônica (SBMicro), com participação ativa e apresentação de pesquisas no simpósio Chip In Sampa / SFORUM realizado na Escola Politécnica da USP, em São Paulo.
+                </p>
+              </div>
+
+              <div class="reveal relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="Student Researcher in Digital Image Processing">
+                    Aluno Pesquisador de PDI
+                  </h4>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-0.5 rounded w-fit" data-en="Academia STEM • Nov 2020–Oct 2022">
+                    Academia STEM • nov. de 2020–out. de 2022
+                  </span>
+                </div>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Developed digital image processing simulations in MATLAB and built Python interfaces with PyQt5 for engineering students.">
+                  Desenvolvimento de simulações de processamento digital de imagens em MATLAB e interfaces em Python com PyQt5 para estudantes de engenharia.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section id="voluntariado" aria-labelledby="voluntariado-titulo" class="scroll-mt-24">
+            <h3 id="voluntariado-titulo" class="reveal mb-6 font-display text-xl sm:text-2xl font-bold tracking-tight text-zinc-950 dark:text-white" data-en="Volunteering">
+              Voluntariado
+            </h3>
+            <div class="career-timeline relative flex flex-col gap-12 pl-8 sm:pl-10">
+              <div class="absolute left-[11px] sm:left-[15px] top-2 bottom-2 w-[2px] bg-zinc-200 dark:bg-zinc-800"></div>
+              <div class="timeline-progress-line absolute left-[11px] sm:left-[15px] top-2 bottom-2 w-[2px] bg-emerald-500"></div>
+
+              <div class="reveal relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="Production Assistant">
+                    Assistente de Produção
+                  </h4>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-0.5 rounded w-fit" data-en="TEDxManaus • Mar 2026–present">
+                    TEDxManaus • mar. de 2026–atual
+                  </span>
+                </div>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Volunteer production support for “Travessia: ideias que movem Manaus” (Crossing: Ideas That Move Manaus).">
+                  Apoio voluntário à produção de “Travessia: ideias que movem Manaus”.
+                </p>
+              </div>
+
+              <div class="reveal relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="Industry 4.0 Laboratory Assistant">
+                    Assistente de Laboratório de Indústria 4.0
+                  </h4>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-0.5 rounded w-fit" data-en="Hub – Tecnologia e Inovação • Sep 2019–Dec 2020">
+                    Hub – Tecnologia e Inovação • set. de 2019–dez. de 2020
+                  </span>
+                </div>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Used Ladder logic with WEG and Allen-Bradley PLCs, modeled parts for 3D printing in Fusion 360, and simulated automation and digital twins in Factory I/O.">
+                  Programação Ladder em CLPs WEG e Allen-Bradley, modelagem para impressão 3D no Fusion 360 e simulação de automação e gêmeos digitais no Factory I/O.
+                </p>
+              </div>
+
+              <div class="reveal relative">
+                <span class="absolute -left-8 sm:-left-10 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-950 border-2 border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
+                </span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                  <h4 class="font-display text-lg font-bold text-zinc-950 dark:text-white" data-en="English and Math Tutor">
+                    Tutor de Inglês e Matemática
+                  </h4>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-0.5 rounded w-fit" data-en="Fundação Matias Machline • Mar 2019–Feb 2020">
+                    Fundação Matias Machline • mar. de 2019–fev. de 2020
+                  </span>
+                </div>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Helped elementary school students learn English and math and prepare for the foundation’s admissions process.">
+                  Apoio a alunos do ensino fundamental em inglês e matemática e na preparação para o processo seletivo da fundação.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SEÇÃO 5: CONTATO & FOOTER
+    ====================================================================== -->
+    <section id="contato" class="py-20 sm:py-28">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8">
+        <div class="bento-card reveal rounded-3xl border border-zinc-200/90 dark:border-zinc-800 bg-card-light dark:bg-card-dark p-8 sm:p-12 lg:p-16 text-center max-w-4xl mx-auto shadow-xs">
+          <div class="relative z-10 space-y-6">
+            <span class="inline-flex items-center gap-2 font-mono text-xs font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span data-en="Manaus, Amazonas, Brazil">Manaus, Amazonas, Brasil</span>
+            </span>
+
+            <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 dark:text-white" data-en="Let’s Build Something Together">
+              Vamos construir algo sólido juntos?
+            </h2>
+
+            <p class="text-base text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto leading-relaxed" data-en="I’m open to collaborating on embedded systems, app development, and systems architecture, as well as contributing to microelectronics research.">
+              Quero colaborar em projetos de sistemas embarcados, desenvolvimento de aplicativos e arquitetura de sistemas, além de contribuir para pesquisas em microeletrônica.
+            </p>
+
+            <!-- Botão de Cópia Rápida de E-mail + Redes -->
+            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+              <button
+                type="button"
+                onclick="copyEmailToClipboard()"
+                class="magnetic-btn w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-mono text-xs sm:text-sm font-medium hover:bg-emerald-600 dark:hover:bg-emerald-400 dark:hover:text-zinc-950 transition-colors shadow-sm"
+              >
+                <span id="email-display">laurobrizidio@hotmail.com</span>
+                <svg class="w-4 h-4 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </button>
+
+              <div class="flex items-center gap-3 w-full sm:w-auto justify-center">
+                <a
+                  href="https://github.com/laurobrizidio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub de Lauro Brizidio" data-en-label="Lauro Brizidio’s GitHub"
+                  class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 text-sm font-medium hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-950 dark:hover:text-white transition-all"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                  </svg>
+                  <span>GitHub</span>
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/in/laurobrizidio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn de Lauro Brizidio" data-en-label="Lauro Brizidio’s LinkedIn"
+                  class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 text-sm font-medium hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-950 dark:hover:text-white transition-all"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Rodapé Minimalista -->
+  <footer class="border-t border-zinc-200/70 dark:border-zinc-800/70 py-8">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+      <p data-en="© 2026 Lauro Benicio Gambizs Brizidio. All rights reserved.">© 2026 Lauro Benicio Gambizs Brizidio. Todos os direitos reservados.</p>
+      <p data-en="Manaus, Amazonas, Brazil • 03°06&#x27;S 60°01&#x27;W">Manaus, Amazonas, Brasil • 03°06'S 60°01'W</p>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       MODAL INTERATIVO DE DETALHES DO PROJETO (DRAWER / DIALOG)
+  ====================================================================== -->
+  <div
+    id="project-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 bg-zinc-950/60 backdrop-blur-xs opacity-0 transition-opacity duration-300"
+  >
+    <div
+      id="project-modal-panel"
+      class="relative w-full max-w-2xl max-h-[88vh] overflow-y-auto rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300"
+    >
+      <!-- Cabeçalho do Modal -->
+      <div class="flex items-start justify-between gap-4 pb-5 border-b border-zinc-100 dark:border-zinc-800">
+        <div>
+          <span id="modal-category" class="font-mono text-xs font-medium text-emerald-600 dark:text-emerald-400" data-en="Category">
+            Categoria
+          </span>
+          <h3 id="modal-title" class="mt-1 font-display text-2xl font-bold text-zinc-950 dark:text-white" data-en="Project Title">
+            Título do Projeto
+          </h3>
+        </div>
+        <button
+          type="button"
+          onclick="closeProjectModal()"
+          aria-label="Fechar janela de detalhes" data-en-label="Close project details"
+          class="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Corpo do Modal -->
+      <div class="py-6 space-y-6 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+        <div>
+          <h4 class="font-mono text-xs uppercase tracking-wider text-zinc-400 mb-2" data-en="Overview">Visão Geral</h4>
+          <p id="modal-overview"></p>
+        </div>
+
+        <div>
+          <h4 class="font-mono text-xs uppercase tracking-wider text-zinc-400 mb-2" data-en="Architecture &amp; Engineering">Arquitetura &amp; Engenharia</h4>
+          <p id="modal-architecture"></p>
+        </div>
+
+        <div>
+          <h4 class="font-mono text-xs uppercase tracking-wider text-zinc-400 mb-2.5" data-en="Technical Highlights">Destaques Técnicos</h4>
+          <ul id="modal-highlights" class="space-y-2"></ul>
+        </div>
+
+        <div>
+          <h4 class="font-mono text-xs uppercase tracking-wider text-zinc-400 mb-2.5" data-en="Technology Stack">Stack Tecnológica</h4>
+          <div id="modal-stack" class="flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex justify-end">
+        <button
+          type="button"
+          onclick="closeProjectModal()"
+          class="px-5 py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-medium text-xs hover:bg-emerald-600 dark:hover:bg-emerald-400 transition-colors"
+         data-en="Close Details">
+          Fechar Inspeção
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       TOAST DE FEEDBACK (CÓPIA DE E-MAIL)
+  ====================================================================== -->
+  <div
+    id="toast"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-mono text-xs shadow-lg border border-zinc-700/50 dark:border-zinc-300/50 translate-y-16 opacity-0 pointer-events-none transition-all duration-300"
+  >
+    <svg class="w-4 h-4 text-emerald-400 dark:text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+    <span data-en="Email copied to clipboard!">E-mail copiado para a área de transferência!</span>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT PURO (INTERATIVIDADE, ANIMAÇÕES E DADOS)
+  ====================================================================== -->
+  <script>
+    // 1. Gerenciamento de Tema (Claro por padrão, respeitando preferência salva)
+    const htmlEl = document.documentElement;
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    function readPreference(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    }
+
+    function savePreference(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch {
+        // The current page still works when browser storage is unavailable.
+      }
+    }
+
+    function initTheme() {
+      const savedTheme = readPreference('theme');
+      if (savedTheme === 'dark') {
+        htmlEl.classList.add('dark');
+      } else {
+        htmlEl.classList.remove('dark');
+      }
+    }
+    initTheme();
+
+    themeToggleBtn.addEventListener('click', () => {
+      htmlEl.classList.toggle('dark');
+      const isDark = htmlEl.classList.contains('dark');
+      savePreference('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Menu Mobile
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    function setMobileMenu(open) {
+      mobileMenu.classList.toggle('hidden', !open);
+      mobileMenuBtn.setAttribute('aria-expanded', String(open));
+    }
+
+    mobileMenuBtn.addEventListener('click', () => {
+      setMobileMenu(mobileMenu.classList.contains('hidden'));
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setMobileMenu(false));
+    });
+
+    // 2. Barra de Progresso de Leitura no Topo
+    const scrollProgress = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      scrollProgress.style.width = `${progress}%`;
+    }, { passive: true });
+
+    // 3. IntersectionObserver para Revelação Suave e Linha da Timeline
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60px 0px',
+      threshold: 0.12
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Observador da linha da timeline
+    const timelineObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.parentElement.querySelector('.timeline-progress-line').classList.add('is-drawn');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.career-timeline').forEach(timeline => {
+      timelineObserver.observe(timeline.querySelector('.reveal'));
+    });
+
+    // 4. Efeito Spotlight nos Bento Cards (rastreamento do cursor)
+    document.querySelectorAll('.bento-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // 5. Efeito Magnético Sutil nos CTAs Principais
+    document.querySelectorAll('.magnetic-btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const rect = btn.getBoundingClientRect();
+        const x = (e.clientX - rect.left - rect.width / 2) * 0.16;
+        const y = (e.clientY - rect.top - rect.height / 2) * 0.16;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate(0px, 0px)';
+      });
+    });
+
+    // 6. Micro-Widget Interativo do Hero (Camadas de Arquitetura)
+    const layerData = {
+      vlsi: {
+        badge: 'SILICON LEVEL',
+        arch: 'CMOS Sub-Micron / RISC-V',
+        verif: 'SPICE / ngspice / FPGA',
+        affil: 'CI Amazônia • SBMicro',
+        desc: { 'pt-BR': '> Projeto físico e elétrico de circuitos integrados de baixo consumo e síntese em hardware reconfigurável.', en: '> Physical and electrical design of low-power integrated circuits and synthesis on reconfigurable hardware.' }
+      },
+      embedded: {
+        badge: 'KERNEL & BSP',
+        arch: 'Yocto Project / ESP32 / RTOS',
+        verif: 'BitBake / Poky / TinyML',
+        affil: 'Edge AI & NILM Systems',
+        desc: { 'pt-BR': '> Construção de imagens Linux embarcadas customizadas, drivers de sensores e inferência neural na borda.', en: '> Custom embedded Linux images, sensor drivers, and neural network inference on edge devices.' }
+      },
+      android: {
+        badge: 'AOSP & MOBILE',
+        arch: 'Android 15 (API 35) / Cuttlefish',
+        verif: 'Vulkan / gfxstream / Appium',
+        affil: 'Clean Arch • Jetpack Compose',
+        desc: { 'pt-BR': '> Integração hardware-HAL, virtualização AOSP e desenvolvimento de aplicativos nativos de alta confiabilidade.', en: '> Hardware integration through the HAL, AOSP virtualization, and development of reliable native apps.' }
+      }
+    };
+
+    const layerTabs = document.querySelectorAll('.layer-tab');
+    const layerBadge = document.getElementById('layer-badge');
+    const layerContent = document.getElementById('layer-content');
+    let activeLayer = 'vlsi';
+
+    function updateLayerDescription() {
+      document.getElementById('layer-description').textContent = layerData[activeLayer].desc[htmlEl.lang];
+    }
+
+    layerTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        layerTabs.forEach(t => {
+          t.classList.remove('active', 'bg-white', 'dark:bg-zinc-800', 'text-zinc-900', 'dark:text-white', 'shadow-xs');
+          t.classList.add('text-zinc-500', 'dark:text-zinc-400');
+        });
+        tab.classList.add('active', 'bg-white', 'dark:bg-zinc-800', 'text-zinc-900', 'dark:text-white', 'shadow-xs');
+        tab.classList.remove('text-zinc-500', 'dark:text-zinc-400');
+
+        activeLayer = tab.dataset.layer;
+        const info = layerData[activeLayer];
+        layerBadge.textContent = info.badge;
+        layerContent.innerHTML = `
+          <div class="flex justify-between">
+            <span class="text-zinc-400">target_arch:</span>
+            <span class="text-zinc-800 dark:text-zinc-200 font-medium">${info.arch}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-zinc-400">verification:</span>
+            <span class="text-emerald-600 dark:text-emerald-400">${info.verif}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-zinc-400">focus_area:</span>
+            <span class="text-zinc-800 dark:text-zinc-200">${info.affil}</span>
+          </div>
+          <div id="layer-description" class="pt-2 border-t border-zinc-200/60 dark:border-zinc-800/80 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed"></div>
+        `;
+        updateLayerDescription();
+      });
+    });
+
+    // 7. Filtragem Dinâmica dos Projetos
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectItems = document.querySelectorAll('.project-item');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('active', 'bg-zinc-900', 'dark:bg-zinc-100', 'text-white', 'dark:text-zinc-950');
+          b.classList.add('border', 'border-zinc-200', 'dark:border-zinc-800', 'bg-white', 'dark:bg-zinc-900', 'text-zinc-600', 'dark:text-zinc-400');
+        });
+
+        btn.classList.add('active', 'bg-zinc-900', 'dark:bg-zinc-100', 'text-white', 'dark:text-zinc-950');
+        btn.classList.remove('border', 'border-zinc-200', 'dark:border-zinc-800', 'bg-white', 'dark:bg-zinc-900', 'text-zinc-600', 'dark:text-zinc-400');
+
+        const filter = btn.getAttribute('data-filter');
+
+        projectItems.forEach(item => {
+          const categories = item.getAttribute('data-category').split(' ');
+          if (filter === 'all' || categories.includes(filter)) {
+            item.classList.remove('is-hidden');
+          } else {
+            item.classList.add('is-hidden');
+          }
+        });
+      });
+    });
+
+    // 8. Dados e Controle do Modal de Projetos (Deep-Dive)
+    const projectsDatabase = {
+      'volei': {
+        category: 'Android & Mobile • Software Livre (FOSS)',
+        title: 'Volei Pro',
+        overview: 'Aplicativo Android nativo desenvolvido sob filosofia FOSS (com foco em distribuição via F-Droid, sem rastreadores proprietários) para organizar partidas recreativas de vôlei, gerenciar filas de espera e automatizar a rotação justa de equipes.',
+        architecture: 'Estruturado rigorosamente em Clean Architecture com separação clara entre camadas de Domínio, Dados e Apresentação (MVVM). A interface declarativa foi construída 100% em Jetpack Compose com estado reativo unidirecional (UDF) e persistência offline-first utilizando Room Database.',
+        highlights: [
+          'Algoritmo determinístico de rotação e equilíbrio de times com suporte a regras personalizadas de saída.',
+          'Zero dependências proprietárias do Google Play Services, garantindo compatibilidade total com builds reprodutíveis F-Droid.',
+          'Persistência local transacional com Room e Coroutines/Flow para resposta instantânea em quadra sem conexão.'
+        ],
+        stack: ['Kotlin', 'Jetpack Compose', 'Clean Architecture', 'MVVM', 'Room Database', 'Coroutines & Flow', 'F-Droid / FOSS']
+      },
+      'ci-amazonia': {
+        category: 'Microeletrônica, VLSI & Edge AI',
+        title: 'Pesquisa VLSI, RISC-V & TinyML — CI Amazônia',
+        overview: 'Projeto de pesquisa e desenvolvimento conduzido no programa de residência em microeletrônica em Manaus (CI Amazônia), unindo design de circuitos integrados de baixo consumo e inteligência artificial embarcada para eficiência energética.',
+        architecture: 'Combina a prototipação de blocos digitais e aceleradores sobre arquitetura aberta RISC-V em FPGA com a implementação de modelos TinyML voltados ao Monitoramento Não-Intrusivo de Cargas Elétricas (NILM — Non-Intrusive Load Monitoring), permitindo identificar assinaturas de eletrodomésticos a partir de um único ponto de medição.',
+        highlights: [
+          'Análise e simulação de células CMOS em tecnologias Very Deep Sub-Micron visando redução de potência dinâmica e estática.',
+          'Desenvolvimento e validação de subsistemas baseados em RISC-V e lógica reconfigurável em FPGA.',
+          'Aplicação de TinyML para desagregação de consumo elétrico (NILM) diretamente em hardware restrito.'
+        ],
+        stack: ['RISC-V', 'FPGA', 'CMOS VLSI', 'SPICE / ngspice', 'TinyML', 'NILM', 'CI Amazônia']
+      },
+      'memory-array': {
+        category: "Microeletrônica & VLSI • abr.–jul. de 2026",
+        title: "Memória de 16 bits com flip-flops",
+        overview: "O projeto usa células padrão para armazenar 16 bits em flip-flops, com lógica combinacional para endereçamento e controle.",
+        architecture: "O fluxo usa LibreLane e OpenROAD com o PDK IHP SG13G2 para levar o RTL ao layout final em GDSII.",
+        highlights: [
+          "Simulação funcional do RTL em Verilog.",
+          "Implementação física e análise de temporização.",
+          "Verificação da correspondência entre layout e esquemático (LVS).",
+        ],
+        stack: ["Verilog", "LibreLane", "OpenROAD", "IHP SG13G2", "GDSII"],
+      },
+      'plant-io': {
+        category: "Android & Sistemas Embarcados • mar.–out. de 2023",
+        title: "Plant.io | Monitoramento de Plantas",
+        overview: "Projeto em equipe desenvolvido durante a formação DevTitans para visualizar medições de sensores no Android.",
+        architecture: "A equipe adaptou o kernel Android e integrou o ESP32 por USB OTG, aplicando conceitos da camada de abstração de hardware (HAL) do AOSP.",
+        highlights: [
+          "Customização do kernel Android.",
+          "Comunicação com o ESP32 por USB OTG.",
+          "Visualização da temperatura e da umidade do solo no dispositivo.",
+        ],
+        stack: ["AOSP", "Android HAL", "ESP32", "USB OTG"],
+      },
+      'arapaima-gigas': {
+        category: "Engenharia Elétrica • jan.–jun. de 2021",
+        title: "Arapaima Gigas | Rota Manaus–Tefé",
+        overview: "Projeto da UEA para uma competição internacional da Worldwide Ferry Safety Association (WFSA).",
+        architecture: "Minha contribuição foi projetar o sistema elétrico e dimensionar os painéis solares para ampliar a autonomia energética da embarcação.",
+        highlights: [
+          "Projeto elétrico da embarcação.",
+          "Dimensionamento do sistema fotovoltaico.",
+          "Prêmio Especial da WFSA em 2021.",
+        ],
+        stack: ["Energia solar", "Projeto elétrico", "WFSA"],
+      },
+    };
+
+    const projectsInEnglish = {
+      'volei': {
+        category: "Android & Mobile • Free and Open-Source Software (FOSS)",
+        title: "Volei Pro",
+        overview: "A native, open-source Android app for organizing casual volleyball matches, managing waitlists, and rotating teams fairly. Designed for F-Droid distribution without proprietary trackers.",
+        architecture: "Clean Architecture separates domain, data, and presentation (MVVM). The Jetpack Compose UI uses unidirectional data flow, and Room provides offline-first storage.",
+        highlights: [
+          "Deterministic team rotation and balancing with configurable rules for players leaving.",
+          "Works without proprietary Google Play Services and supports reproducible F-Droid builds.",
+          "Room transactions, coroutines, and Flow keep the app responsive on the court, even offline.",
+        ],
+        stack: ["Kotlin", "Jetpack Compose", "Clean Architecture", "MVVM", "Room Database", "Coroutines & Flow", "F-Droid / FOSS"],
+      },
+      'ci-amazonia': {
+        category: "Microelectronics, VLSI & Edge AI",
+        title: "VLSI, RISC-V & TinyML Research — CI Amazônia",
+        overview: "Research and development through the CI Amazônia microelectronics residency in Manaus, combining low-power integrated circuit design with embedded AI for energy efficiency.",
+        architecture: "Digital blocks and accelerators are prototyped on FPGAs using the open RISC-V architecture. TinyML models use non-intrusive load monitoring (NILM) to identify appliance signatures from a single measurement point.",
+        highlights: [
+          "CMOS cell analysis and simulation in very-deep-submicron processes to reduce dynamic and static power.",
+          "Development and validation of RISC-V subsystems and reconfigurable FPGA logic.",
+          "TinyML-based energy disaggregation (NILM) on resource-constrained hardware.",
+        ],
+        stack: ["RISC-V", "FPGA", "CMOS VLSI", "SPICE / ngspice", "TinyML", "NILM", "CI Amazônia"],
+      },
+      'memory-array': {
+        category: "Microelectronics & VLSI • Apr–Jul 2026",
+        title: "16-Bit Flip-Flop Memory Array",
+        overview: "The design stores 16 bits in standard-cell flip-flops and uses combinational logic for addressing and control.",
+        architecture: "LibreLane and OpenROAD take the RTL to a final GDSII layout using the IHP SG13G2 process design kit.",
+        highlights: [
+          "Functional simulation of the Verilog RTL.",
+          "Physical implementation and timing analysis.",
+          "Layout-versus-schematic (LVS) verification.",
+        ],
+        stack: ["Verilog", "LibreLane", "OpenROAD", "IHP SG13G2", "GDSII"],
+      },
+      'plant-io': {
+        category: "Android & Embedded Systems • Mar–Oct 2023",
+        title: "Plant.io | Android-Based Plant Monitoring",
+        overview: "Built as a team during DevTitans training, the project displays sensor readings on Android.",
+        architecture: "The team adapted the Android kernel and connected the ESP32 over USB OTG, applying AOSP Hardware Abstraction Layer (HAL) concepts.",
+        highlights: [
+          "Android kernel customization.",
+          "Communication with the ESP32 over USB OTG.",
+          "On-device display of temperature and soil moisture.",
+        ],
+        stack: ["AOSP", "Android HAL", "ESP32", "USB OTG"],
+      },
+      'arapaima-gigas': {
+        category: "Electrical Engineering • Jan–Jun 2021",
+        title: "Arapaima Gigas | Manaus–Tefé Route",
+        overview: "UEA developed the vessel for an international competition organized by the Worldwide Ferry Safety Association (WFSA).",
+        architecture: "I designed the electrical system and sized the solar panels to help the vessel operate longer on its own power.",
+        highlights: [
+          "Vessel electrical design.",
+          "Photovoltaic system sizing.",
+          "2021 WFSA Special Award.",
+        ],
+        stack: ["Solar power", "Electrical design", "WFSA"],
+      },
+    };
+
+    const modal = document.getElementById('project-modal');
+    const modalPanel = document.getElementById('project-modal-panel');
+
+    let activeProject = null;
+
+    function renderProjectDetails(projectId) {
+      const database = htmlEl.lang === 'en' ? projectsInEnglish : projectsDatabase;
+      const data = database[projectId];
+      if (!data) return;
+
+      document.getElementById('modal-category').textContent = data.category;
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-overview').textContent = data.overview;
+      document.getElementById('modal-architecture').textContent = data.architecture;
+
+      const highlightsList = document.getElementById('modal-highlights');
+      highlightsList.innerHTML = data.highlights.map(item => `
+        <li class="flex items-start gap-2.5">
+          <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+          <span>${item}</span>
+        </li>
+      `).join('');
+
+      const stackContainer = document.getElementById('modal-stack');
+      stackContainer.innerHTML = data.stack.map(tech => `
+        <span class="px-2.5 py-1 rounded-md font-mono text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700/60">
+          ${tech}
+        </span>
+      `).join('');
+
+    }
+
+    function openProjectModal(projectId) {
+      activeProject = projectId;
+      renderProjectDetails(projectId);
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modalPanel.classList.remove('scale-95');
+        modalPanel.classList.add('scale-100');
+      });
+    }
+
+    function closeProjectModal() {
+      activeProject = null;
+      modal.classList.add('opacity-0');
+      modalPanel.classList.remove('scale-100');
+      modalPanel.classList.add('scale-95');
+      document.body.style.overflow = '';
+
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 280);
+    }
+
+    // Fechar modal ao clicar fora ou pressionar ESC
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeProjectModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeProjectModal();
+      }
+    });
+
+    const languageButtons = document.querySelectorAll('[data-language]');
+    const translatedElements = [
+      ['[data-en]', 'en', 'textContent'],
+      ['[data-en-label]', 'enLabel', 'aria-label'],
+      ['[data-en-content]', 'enContent', 'content']
+    ].flatMap(([selector, key, property]) => Array.from(document.querySelectorAll(selector), element => {
+      const isText = property === 'textContent';
+      return {
+        element,
+        isText,
+        property,
+        portuguese: isText ? element.textContent.trim() : element.getAttribute(property),
+        english: element.dataset[key]
+      };
+    }));
+
+    function setLanguage(language) {
+      htmlEl.lang = language;
+      for (const { element, isText, property, portuguese, english } of translatedElements) {
+        const text = language === 'en' ? english : portuguese;
+        if (isText) {
+          element.textContent = text;
+        } else {
+          element.setAttribute(property, text);
+        }
+      }
+
+      languageButtons.forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.language === language));
+      });
+      updateLayerDescription();
+      if (activeProject) renderProjectDetails(activeProject);
+    }
+
+    languageButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        setLanguage(button.dataset.language);
+        savePreference('portfolio-language', button.dataset.language);
+      });
+    });
+
+    if (readPreference('portfolio-language') === 'en') setLanguage('en');
+
+    // 9. Cópia de E-mail com Feedback Toast (compatível com iFrame via execCommand)
+    let toastTimeout;
+    function copyEmailToClipboard() {
+      const email = document.getElementById('email-display').textContent.trim();
+      const tempInput = document.createElement('input');
+      tempInput.value = email;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        console.error('Falha ao copiar:', err);
+      }
+      document.body.removeChild(tempInput);
+
+      const toast = document.getElementById('toast');
+      toast.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+      }, 3200);
+    }
+  </script>
 </body>
 </html>
